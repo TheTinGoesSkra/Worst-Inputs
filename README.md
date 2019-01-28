@@ -1,2 +1,2 @@
 # Worst-Inputs
-Informatikprojekt von Georg Schwan, Vincent Ellenrieder, Leandro Hunter
+Informatikprojekt von Georg Schwan,Leandro Hunter, Vincent Ellenrieder.
