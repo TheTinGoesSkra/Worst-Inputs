@@ -3,21 +3,24 @@ module Main exposing (main)
 import Browser
 
 import Template
-import Html exposing (Html, button, div, text)
-import Html.Events exposing (onClick)
+import MovingButtons
+import Html exposing (Html, div)
 
 
 type alias Model =
-    { template : Template.Model }
+    { template : Template.Model
+    , movingButtons : MovingButtons.Model}
 
 
 initialModel : Model
 initialModel =
-    { template = Template.initialModel }
+    { template = Template.initialModel
+    , movingButtons = MovingButtons.initialModel }
 
 
 type Msg
     = Template Template.Msg
+    | MovingButtons MovingButtons.Msg
 
 
 
@@ -26,13 +29,16 @@ update msg model =
     case msg of
         Template template ->
             { model | template = Template.update template model.template }
+            
+        MovingButtons movingButtons ->
+            { model | movingButtons = MovingButtons.update movingButtons model.movingButtons }
 
 
 view : Model -> Html Msg
 view model =
-
     div []
-        [ Template.view model.template
+        [ Html.map Template (Template.view model.template)
+        , Html.map MovingButtons (MovingButtons.view model.movingButtons)
         ]
 
 
