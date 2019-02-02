@@ -3,12 +3,13 @@ module Template exposing (..)
 import Browser
 import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
+import Utils
 
 
 main =
     Browser.element
         { init = init
-        , view = view
+        , view = Utils.embedView view
         , update = update
         , subscriptions = subscriptions
         }
@@ -16,6 +17,11 @@ main =
 
 type alias Model =
     { count : Int }
+
+
+type Msg
+    = Increment
+    | Decrement
 
 
 init : () -> ( Model, Cmd Msg )
@@ -38,11 +44,6 @@ initModel =
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
-
-
-type Msg
-    = Increment
-    | Decrement
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )

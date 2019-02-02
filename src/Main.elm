@@ -80,6 +80,7 @@ view model =
     Grid.container []
         [ CDN.stylesheet 
         , Html.map Template (Template.view model.template)
+        , hr [] []
         , Html.map MovingButtons (MovingButtons.view model.movingButtons)
         ]
 

@@ -8,13 +8,14 @@ import Html.Events exposing (onClick)
 import Random
 import Task
 import Time
+import Utils
 import Bootstrap.Button as Button
 import Bootstrap.Utilities.Spacing as Spacing
 
 main =
     Browser.element
         { init = init
-        , view = view
+        , view = Utils.embedView view
         , update = update
         , subscriptions = subscriptions
         }
@@ -41,6 +42,14 @@ type alias Model =
     , positions : Positions
     , alert : Alert
     }
+
+
+type Msg
+    = Reset
+    | Clicked Int
+    | Tick Time.Posix
+    | RandomPositions Positions
+    | ChangeAlert
 
 
 init : () -> ( Model, Cmd Msg )
@@ -82,14 +91,6 @@ positionGen =
 positionsGen : Random.Generator Positions
 positionsGen =
     Random.list 10 positionGen
-
-
-type Msg
-    = Reset
-    | Clicked Int
-    | Tick Time.Posix
-    | RandomPositions Positions
-    | ChangeAlert
 
 
 subscriptions : Model -> Sub Msg
@@ -156,7 +157,7 @@ updateModel msg model =
 
         ChangeAlert ->
             if List.length model.numbers < 10 then
-                { model | alert = Alert "Please enter a 10 digit number" "red" }
+                { model | alert = Alert "Please submit a 10 digit number" "red" }
 
             else
                 { model | alert = Alert "Thank you" "green" }
@@ -169,38 +170,42 @@ updateCmd msg model =
 
 view : Model -> Html Msg
 view model =
-    let
-        px : Float -> String
-        px value =
-            (String.fromInt <| round value) ++ "px"
-
-        oneButton : Int -> Position -> Html Msg
-        oneButton i pos =
-            Button.button 
-                [ Button.secondary
-                , Button.attrs 
-                    [style "height" (px 60)
-                    , style "width" (px 60)
-                    , style "left" (px pos.x)
-                    , style "position" "absolute"
-                    , style "top" (px pos.y)
-                    , onClick <| Clicked i ]
-                    ]
-                [ text <| String.fromInt i ]
-
-        buttons =
-            div
-                [ style "height" "300px"
-                , style "width" "800px"
-                , style "border-style" "solid"
-                , style "position" "relative"
-                ]
-                (List.indexedMap oneButton model.positions)
-    in
     div []
         [ h4 [ style "height" "1em", Spacing.mb1 ] [ text <| "Phone number: " ++ List.foldl (\i b -> b ++ String.fromInt i)  ""  model.numbers ]
         , Button.button [ Button.danger, Button.attrs [ onClick Reset ] ] [ text "Reset" ]
         , Button.button [ Button.primary, Button.attrs [ onClick ChangeAlert, Spacing.m2 ] ] [ text "Submit" ]
         , h6 [ style "color" model.alert.color, style "display" "inline-block" ] [ text model.alert.message ]
-        , div [] [ buttons ]
+        , div [] [ buttons model.positions ]
         ]
+
+
+px : Float -> String
+px value =
+    (String.fromInt <| round value) ++ "px"
+
+
+oneButton : Int -> Position -> Html Msg
+oneButton i pos =
+    Button.button 
+        [ Button.secondary
+        , Button.attrs 
+            [style "height" (px 60)
+            , style "width" (px 60)
+            , style "left" (px pos.x)
+            , style "position" "absolute"
+            , style "top" (px pos.y)
+            , onClick <| Clicked i ]
+            ]
+        [ text <| String.fromInt i ]
+
+
+buttons : Positions -> Html Msg
+buttons positions =
+    div
+        [ style "height" "300px"
+        , style "width" "800px"
+        , style "border-style" "solid"
+        , style "position" "relative"
+        ]
+        (List.indexedMap oneButton positions)
+
