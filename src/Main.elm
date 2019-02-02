@@ -1,21 +1,22 @@
 module Main exposing (main)
 
 import Browser
-
-import Template
-import MovingButtons
 import Html exposing (Html, div)
+import MovingButtons
+import Template
 
 
 type alias Model =
     { template : Template.Model
-    , movingButtons : MovingButtons.Model}
+    , movingButtons : MovingButtons.Model
+    }
 
 
 initialModel : Model
 initialModel =
     { template = Template.initialModel
-    , movingButtons = MovingButtons.initialModel }
+    , movingButtons = MovingButtons.initialModel
+    }
 
 
 type Msg
@@ -23,13 +24,12 @@ type Msg
     | MovingButtons MovingButtons.Msg
 
 
-
 update : Msg -> Model -> Model
 update msg model =
     case msg of
         Template template ->
             { model | template = Template.update template model.template }
-            
+
         MovingButtons movingButtons ->
             { model | movingButtons = MovingButtons.update movingButtons model.movingButtons }
 

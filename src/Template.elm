@@ -1,7 +1,8 @@
-module Template exposing (..)
+module Template exposing (Model, Msg(..), initialModel, update, view)
 
 import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
+
 
 type alias Model =
     { count : Int }
