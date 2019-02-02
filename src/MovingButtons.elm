@@ -24,16 +24,21 @@ type alias Direction =
 
 
 type alias Position =
-    { x : Float, y : Float, direction : Direction }
+    { x : Float, y : Float, direction : Direction, speed : Float }
 
 
 type alias Positions =
     List Position
 
 
+type alias Alert =
+    { message : String, color : String }
+
+
 type alias Model =
     { numbers : List Int
     , positions : Positions
+    , alert : Alert
     }
 
 
@@ -52,7 +57,8 @@ initCmd =
 initModel : Model
 initModel =
     { numbers = []
-    , positions = List.repeat 10 (Position 0 0 <| Direction 0 0)
+    , positions = List.repeat 10 (Position 0 0 (Direction 0 0) 0)
+    , alert = Alert "" ""
     }
 
 
@@ -69,7 +75,7 @@ directionGen =
 
 positionGen : Random.Generator Position
 positionGen =
-    Random.map3 Position (Random.float 0 (800 - 60)) (Random.float 0 (300 - 60)) directionGen
+    Random.map4 Position (Random.float 0 (800 - 60)) (Random.float 0 (300 - 60)) directionGen (Random.float 2 4)
 
 
 positionsGen : Random.Generator Positions
@@ -82,6 +88,7 @@ type Msg
     | Clicked Int
     | Tick Time.Posix
     | RandomPositions Positions
+    | AlertAction
 
 
 subscriptions : Model -> Sub Msg
@@ -116,7 +123,7 @@ changeDirectionButton pos =
 
 moveButton : Position -> Position
 moveButton pos =
-    { pos | x = pos.x + (pos.direction.x * 3), y = pos.y + (pos.direction.y * 3) }
+    { pos | x = pos.x + (pos.direction.x * pos.speed), y = pos.y + (pos.direction.y * pos.speed) }
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -128,10 +135,14 @@ updateModel : Msg -> Model -> Model
 updateModel msg model =
     case msg of
         Reset ->
-            initModel
+            { model | numbers = [], alert = Alert "" "" }
 
         Clicked num ->
-            { model | numbers = model.numbers ++ [ num ] }
+            if List.length model.numbers < 10 then
+                { model | numbers = model.numbers ++ [ num ] }
+
+            else
+                model
 
         Tick time ->
             { model
@@ -142,6 +153,13 @@ updateModel msg model =
         RandomPositions positions ->
             { model | positions = positions }
 
+        AlertAction ->
+            if List.length model.numbers < 10 then
+                { model | alert = Alert "Please enter a 10 digit number" "red" }
+
+            else
+                { model | alert = Alert "Thank you" "green" }
+
 
 updateCmd : Msg -> Model -> Cmd Msg
 updateCmd msg model =
@@ -151,6 +169,7 @@ updateCmd msg model =
 view : Model -> Html Msg
 view model =
     let
+
         px : Float -> String
         px value =
             (String.fromInt <| round value) ++ "px"
@@ -171,12 +190,15 @@ view model =
             div
                 [ style "height" "300px"
                 , style "width" "800px"
-                , style "border-style" "dotted"
+                , style "border-style" "solid"
                 , style "position" "relative"
                 ]
                 (List.indexedMap (\i pos -> oneButton i pos) model.positions)
     in
     div []
-        [ div [] [ text <| Debug.toString <| model.numbers ]
+        [ div [ style "height" "1em" ] [ text <| "Phone number: " ++ List.foldl (\i b -> b ++ String.fromInt i)  ""  model.numbers ]
+        , button [ onClick Reset ] [ text "Reset" ]
+        , button [ onClick AlertAction ] [ text "Submit" ]
+        , div [ style "color" model.alert.color, style "display" "inline-block" ] [ text model.alert.message ]
         , div [] [ buttons ]
         ]
