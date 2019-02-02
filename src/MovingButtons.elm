@@ -1,5 +1,6 @@
 module MovingButtons exposing (..)
 
+import Array
 import Browser
 import Html exposing (Html, button, div, text)
 import Html.Attributes exposing (style)
@@ -7,7 +8,6 @@ import Html.Events exposing (onClick)
 import Random
 import Task
 import Time
-import Array
 
 
 main =
@@ -20,7 +20,8 @@ main =
 
 
 type alias Direction =
-    { x : Float, y : Float}
+    { x : Float, y : Float }
+
 
 type alias Position =
     { x : Float, y : Float, direction : Direction }
@@ -38,25 +39,33 @@ type alias Model =
 
 init : () -> ( Model, Cmd Msg )
 init _ =
-    ( initialModel
-    , Random.generate RandomPositions positionsGen
+    ( initModel
+    , initCmd
     )
 
 
-initialModel : Model
-initialModel =
+initCmd : Cmd Msg
+initCmd =
+    Random.generate RandomPositions positionsGen
+
+
+initModel : Model
+initModel =
     { numbers = []
     , positions = List.repeat 10 (Position 0 0 <| Direction 0 0)
     }
 
+
 oneOrMinusOneGen : Random.Generator Float
 oneOrMinusOneGen =
     Random.int 0 1
-      |> Random.andThen (\i -> Random.constant <| Maybe.withDefault 10 <| Array.get i <| Array.fromList [-1, 1])
+        |> Random.andThen (\i -> Random.constant <| Maybe.withDefault 1 <| Array.get i <| Array.fromList [ -1, 1 ])
+
 
 directionGen : Random.Generator Direction
 directionGen =
     Random.map2 Direction oneOrMinusOneGen oneOrMinusOneGen
+
 
 positionGen : Random.Generator Position
 positionGen =
@@ -80,40 +89,63 @@ subscriptions model =
     Time.every 16 Tick
 
 
+changeDirectionX : Position -> Position
+changeDirectionX pos =
+    { pos | direction = { x = pos.direction.x * -1, y = pos.direction.y } }
+
+
+changeDirectionY : Position -> Position
+changeDirectionY pos =
+    { pos | direction = { x = pos.direction.x, y = pos.direction.y * -1 } }
+
+
 changeDirectionButton : Position -> Position
 changeDirectionButton pos =
-    if pos.x < 0 || pos.x > 800 - 60 then
-        { pos | direction = { x = pos.direction.x * -1, y = pos.direction.y } }
+    if (pos.x < 0 || pos.x > 800 - 60) && (pos.y < 0 || pos.y > 300 - 60) then
+        changeDirectionY <| changeDirectionX pos
+
+    else if pos.x < 0 || pos.x > 800 - 60 then
+        changeDirectionX pos
 
     else if pos.y < 0 || pos.y > 300 - 60 then
-        { pos | direction = { x = pos.direction.x, y = pos.direction.y  * -1 } }
+        changeDirectionY pos
 
     else
         pos
 
+
 moveButton : Position -> Position
 moveButton pos =
-    { pos | x = pos.x + (pos.direction.x * 2), y = pos.y + (pos.direction.y * 2)}
+    { pos | x = pos.x + (pos.direction.x * 3), y = pos.y + (pos.direction.y * 3) }
+
 
 update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
+    ( updateModel msg model, updateCmd msg model )
+
+
+updateModel : Msg -> Model -> Model
+updateModel msg model =
     case msg of
         Reset ->
-            ( initialModel, Cmd.none )
+            initModel
 
         Clicked num ->
-            ( { model | numbers = model.numbers ++ [ num ] }, Cmd.none )
+            { model | numbers = model.numbers ++ [ num ] }
 
         Tick time ->
-            ( { model
+            { model
                 | positions =
-                    List.map (\pos -> moveButton <|changeDirectionButton pos ) model.positions
-              }
-            , Cmd.none
-            )
+                    List.map (\pos -> moveButton <| changeDirectionButton pos) model.positions
+            }
 
         RandomPositions positions ->
-            ( { model | positions = positions }, Cmd.none )
+            { model | positions = positions }
+
+
+updateCmd : Msg -> Model -> Cmd Msg
+updateCmd msg model =
+    Cmd.none
 
 
 view : Model -> Html Msg
@@ -132,12 +164,19 @@ view model =
                 , style "position" "absolute"
                 , style "top" (px pos.y)
                 , onClick <| Clicked i
-                ] [ text <| String.fromInt i ]
+                ]
+                [ text <| String.fromInt i ]
 
         buttons =
-            div [style "height" "300px", style "width" "800px", style "border-style" "dotted", style "position" "relative"] (List.indexedMap (\i pos -> oneButton i pos) model.positions)
+            div
+                [ style "height" "300px"
+                , style "width" "800px"
+                , style "border-style" "dotted"
+                , style "position" "relative"
+                ]
+                (List.indexedMap (\i pos -> oneButton i pos) model.positions)
     in
     div []
-        [ div [] [text <| Debug.toString <| model.numbers]
-        , div [ ] [ buttons ]
+        [ div [] [ text <| Debug.toString <| model.numbers ]
+        , div [] [ buttons ]
         ]

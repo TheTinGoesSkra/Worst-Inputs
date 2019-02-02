@@ -1,16 +1,43 @@
-module Template exposing (Model, Msg(..), initialModel, update, view)
+module Template exposing (..)
 
+import Browser
 import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
+
+
+main =
+    Browser.element
+        { init = init
+        , view = view
+        , update = update
+        , subscriptions = subscriptions
+        }
 
 
 type alias Model =
     { count : Int }
 
 
-initialModel : Model
-initialModel =
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( initModel
+    , initCmd
+    )
+
+
+initCmd : Cmd Msg
+initCmd =
+    Cmd.none
+
+
+initModel : Model
+initModel =
     { count = 0 }
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
 
 
 type Msg
@@ -18,14 +45,24 @@ type Msg
     | Decrement
 
 
-update : Msg -> Model -> Model
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
+    ( updateModel msg model, updateCmd msg model )
+
+
+updateModel : Msg -> Model -> Model
+updateModel msg model =
     case msg of
         Increment ->
             { model | count = model.count + 1 }
 
         Decrement ->
             { model | count = model.count - 1 }
+
+
+updateCmd : Msg -> Model -> Cmd Msg
+updateCmd msg model =
+    Cmd.none
 
 
 view : Model -> Html Msg
