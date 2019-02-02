@@ -88,7 +88,7 @@ type Msg
     | Clicked Int
     | Tick Time.Posix
     | RandomPositions Positions
-    | AlertAction
+    | ChangeAlert
 
 
 subscriptions : Model -> Sub Msg
@@ -106,8 +106,8 @@ changeDirectionY pos =
     { pos | direction = { x = pos.direction.x, y = pos.direction.y * -1 } }
 
 
-changeDirectionButton : Position -> Position
-changeDirectionButton pos =
+changeDirection : Position -> Position
+changeDirection pos =
     if (pos.x < 0 || pos.x > 800 - 60) && (pos.y < 0 || pos.y > 300 - 60) then
         changeDirectionY <| changeDirectionX pos
 
@@ -121,8 +121,8 @@ changeDirectionButton pos =
         pos
 
 
-moveButton : Position -> Position
-moveButton pos =
+move : Position -> Position
+move pos =
     { pos | x = pos.x + (pos.direction.x * pos.speed), y = pos.y + (pos.direction.y * pos.speed) }
 
 
@@ -147,13 +147,13 @@ updateModel msg model =
         Tick time ->
             { model
                 | positions =
-                    List.map (\pos -> moveButton <| changeDirectionButton pos) model.positions
+                    List.map (\pos -> move <| changeDirection pos) model.positions
             }
 
         RandomPositions positions ->
             { model | positions = positions }
 
-        AlertAction ->
+        ChangeAlert ->
             if List.length model.numbers < 10 then
                 { model | alert = Alert "Please enter a 10 digit number" "red" }
 
@@ -193,12 +193,12 @@ view model =
                 , style "border-style" "solid"
                 , style "position" "relative"
                 ]
-                (List.indexedMap (\i pos -> oneButton i pos) model.positions)
+                (List.indexedMap oneButton model.positions)
     in
     div []
         [ div [ style "height" "1em" ] [ text <| "Phone number: " ++ List.foldl (\i b -> b ++ String.fromInt i)  ""  model.numbers ]
         , button [ onClick Reset ] [ text "Reset" ]
-        , button [ onClick AlertAction ] [ text "Submit" ]
+        , button [ onClick ChangeAlert ] [ text "Submit" ]
         , div [ style "color" model.alert.color, style "display" "inline-block" ] [ text model.alert.message ]
         , div [] [ buttons ]
         ]
