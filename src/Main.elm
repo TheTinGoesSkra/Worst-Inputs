@@ -1,9 +1,12 @@
 module Main exposing (main)
 
 import Browser
-import Html exposing (Html, div)
 import MovingButtons
 import Template
+
+import Html exposing (..)
+import Bootstrap.CDN as CDN
+import Bootstrap.Grid as Grid
 
 
 type alias Model =
@@ -74,8 +77,9 @@ updateCmd msg model =
 
 view : Model -> Html Msg
 view model =
-    div []
-        [ Html.map Template (Template.view model.template)
+    Grid.container []
+        [ CDN.stylesheet 
+        , Html.map Template (Template.view model.template)
         , Html.map MovingButtons (MovingButtons.view model.movingButtons)
         ]
 

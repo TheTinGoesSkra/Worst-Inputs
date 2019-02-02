@@ -2,13 +2,14 @@ module MovingButtons exposing (..)
 
 import Array
 import Browser
-import Html exposing (Html, button, div, text)
+import Html exposing (..)
 import Html.Attributes exposing (style)
 import Html.Events exposing (onClick)
 import Random
 import Task
 import Time
-
+import Bootstrap.Button as Button
+import Bootstrap.Utilities.Spacing as Spacing
 
 main =
     Browser.element
@@ -169,21 +170,22 @@ updateCmd msg model =
 view : Model -> Html Msg
 view model =
     let
-
         px : Float -> String
         px value =
             (String.fromInt <| round value) ++ "px"
 
         oneButton : Int -> Position -> Html Msg
         oneButton i pos =
-            button
-                [ style "height" (px 60)
-                , style "width" (px 60)
-                , style "left" (px pos.x)
-                , style "position" "absolute"
-                , style "top" (px pos.y)
-                , onClick <| Clicked i
-                ]
+            Button.button 
+                [ Button.secondary
+                , Button.attrs 
+                    [style "height" (px 60)
+                    , style "width" (px 60)
+                    , style "left" (px pos.x)
+                    , style "position" "absolute"
+                    , style "top" (px pos.y)
+                    , onClick <| Clicked i ]
+                    ]
                 [ text <| String.fromInt i ]
 
         buttons =
@@ -196,9 +198,9 @@ view model =
                 (List.indexedMap oneButton model.positions)
     in
     div []
-        [ div [ style "height" "1em" ] [ text <| "Phone number: " ++ List.foldl (\i b -> b ++ String.fromInt i)  ""  model.numbers ]
-        , button [ onClick Reset ] [ text "Reset" ]
-        , button [ onClick ChangeAlert ] [ text "Submit" ]
-        , div [ style "color" model.alert.color, style "display" "inline-block" ] [ text model.alert.message ]
+        [ h4 [ style "height" "1em", Spacing.mb1 ] [ text <| "Phone number: " ++ List.foldl (\i b -> b ++ String.fromInt i)  ""  model.numbers ]
+        , Button.button [ Button.danger, Button.attrs [ onClick Reset ] ] [ text "Reset" ]
+        , Button.button [ Button.primary, Button.attrs [ onClick ChangeAlert, Spacing.m2 ] ] [ text "Submit" ]
+        , h6 [ style "color" model.alert.color, style "display" "inline-block" ] [ text model.alert.message ]
         , div [] [ buttons ]
         ]
