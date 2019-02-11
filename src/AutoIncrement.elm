@@ -3,6 +3,7 @@ module AutoIncrement exposing (..)
 import Browser
 import Html exposing (Html, button, div, text)
 import Html.Events exposing (onClick)
+import Html.Attributes exposing (style)
 import Utils
 import Time
 
@@ -67,10 +68,26 @@ updateCmd msg model =
     Cmd.none
 
 
+makeListToStringAndWithLenght10 : Model -> List String
+
 view : Model -> Html Msg
 view model =
     div []
         [ button [ onClick Ok ] [ text "Ok" ]
+        , div [] ( List.map (\n -> viewBox (String.fromInt n)) model.numbers )
         , div [] [ text <| String.fromInt model.count ]
         , div [] [text <| Debug.toString <| model.numbers]
         ]
+
+
+viewBox : String -> Html Msg
+viewBox num =
+    div [ style "display" "inline-block"
+        , style "height" "100px"
+        , style "width" "100px"
+        , style "text-align" "center"
+        , style "vertical-align" "middle"
+        , style "line-height" "100px"
+        , style "border" "dotted"
+        ]
+        [ text num ]
