@@ -7,15 +7,16 @@ import Html.Events exposing (onClick)
 
 
 type alias Model =
-    { count : Int }
+    { count : Int, message : String }
 
 
 initialModel : Model
 initialModel =
-    { count = 1 }
+    { count = 1, message = ""}
 
 type Msg
     = Increment
+    | Submit
 
 
 update : Msg -> Model -> Model
@@ -23,6 +24,9 @@ update msg model =
     case msg of
         Increment ->
             { model | count = model.count + 1 }
+            
+        Submit ->
+            { model | message = "Thank you!"}
 
 
 view : Model -> Html Msg
@@ -31,9 +35,9 @@ view model =
         [ h1 [] [ text "Please enter your phone number!" ]
         , button [ onClick Increment ] [ text "+1" ]
         , div [] [ text <| separateString <| addZeros 10 <| String.fromInt model.count ]
-        --, button [] [ text "Submit" ]
+        , button [ onClick Submit ] [ text "Submit" ]
+        , div [] [ text <| model.message ]
         ]
-        
 
 
 addZeros : Int -> String -> String
