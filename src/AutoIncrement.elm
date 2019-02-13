@@ -6,6 +6,9 @@ import Html.Events exposing (onClick)
 import Html.Attributes exposing (style)
 import Utils
 import Time
+import Bootstrap.Button as Button
+import Bootstrap.Utilities.Spacing as Spacing
+import Browser
 
 
 main =
@@ -23,6 +26,7 @@ type alias Model =
 
 type Msg
     = Ok
+    | Reset
     | Tick Time.Posix
 
 
@@ -45,7 +49,7 @@ initModel =
 
 subscriptions : Model -> Sub Msg
 subscriptions model =
-    Time.every 300 Tick
+    Time.every 100 Tick
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -57,7 +61,14 @@ updateModel : Msg -> Model -> Model
 updateModel msg model =
     case msg of
         Ok ->
-            { model | numbers = model.numbers ++ [model.count] }
+            if List.length model.numbers < 10 then
+                { model | numbers = model.numbers ++ [model.count] , count = 0 }
+            
+            else
+                model
+
+        Reset ->
+             { model | numbers = [] }
 
         Tick time ->
             { model | count = modBy 10 (model.count + 1) }
@@ -66,17 +77,39 @@ updateModel msg model =
 updateCmd : Msg -> Model -> Cmd Msg
 updateCmd msg model =
     Cmd.none
+    
+
+listIntToListString : List Int -> List String 
+listIntToListString l =
+    List.map String.fromInt l
+
+fillTo10 : List String -> List String
+fillTo10 l =
+    let
+        len = List.length l
+    in
+        l ++ List.repeat (10-len) ""
 
 
-makeListToStringAndWithLenght10 : Model -> List String
+makeListIntToListStringAndWithLength10 : Model -> List String
+makeListIntToListStringAndWithLength10 model =
+    let
+        len = List.length model.numbers
+
+    in
+        if len < 10 then
+            fillTo10 <| listIntToListString <| model.numbers ++ [ model.count ] 
+        
+        else
+            fillTo10 <| listIntToListString model.numbers
+
 
 view : Model -> Html Msg
 view model =
     div []
-        [ button [ onClick Ok ] [ text "Ok" ]
-        , div [] ( List.map (\n -> viewBox (String.fromInt n)) model.numbers )
-        , div [] [ text <| String.fromInt model.count ]
-        , div [] [text <| Debug.toString <| model.numbers]
+        [ Button.button [ Button.secondary, Button.attrs [ onClick Ok ] ] [ text "Ok" ]
+        , Button.button [ Button.danger, Button.attrs [ onClick Reset ] ] [ text "Reset" ]
+        , div [] ( List.map viewBox <| makeListIntToListStringAndWithLength10 model )
         ]
 
 
@@ -88,6 +121,7 @@ viewBox num =
         , style "text-align" "center"
         , style "vertical-align" "middle"
         , style "line-height" "100px"
-        , style "border" "dotted"
+        , style "border" "solid"
+        , style "font-size" "50px"
         ]
         [ text num ]
