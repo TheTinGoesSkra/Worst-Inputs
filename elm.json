@@ -11,6 +11,8 @@
             "elm/html": "1.0.0",
             "elm/random": "1.0.0",
             "elm/time": "1.0.0",
+            "elm-community/random-extra": "3.0.0",
+            "ohanhi/keyboard": "2.0.0",
             "rundis/elm-bootstrap": "5.1.0"
         },
         "indirect": {
