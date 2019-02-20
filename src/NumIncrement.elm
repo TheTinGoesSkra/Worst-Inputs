@@ -1,17 +1,45 @@
-module Main exposing (main)
+module NumIncrement exposing (..)
 
 import Browser
 import Html exposing (Html, button, div, h1, text)
 import Html.Attributes exposing (class)
+
 import Html.Events exposing (onClick)
 
+
+
+init : () -> ( Model, Cmd Msg )
+init _ =
+    ( initModel
+    , initCmd
+    )
+
+
+initCmd : Cmd Msg
+initCmd =
+    Cmd.none
+
+
+subscriptions : Model -> Sub Msg
+subscriptions model =
+    Sub.none
+
+
+update : Msg -> Model -> ( Model, Cmd Msg )
+update msg model =
+    ( updateModel msg model, updateCmd msg model )
+
+
+updateCmd : Msg -> Model -> Cmd Msg
+updateCmd msg model =
+    Cmd.none
 
 type alias Model =
     { count : Int, message : String }
 
 
-initialModel : Model
-initialModel =
+initModel : Model
+initModel =
     { count = 1, message = ""}
 
 type Msg
@@ -19,8 +47,8 @@ type Msg
     | Submit
 
 
-update : Msg -> Model -> Model
-update msg model =
+updateModel : Msg -> Model -> Model
+updateModel msg model =
     case msg of
         Increment ->
             { model | count = model.count + 1 }
@@ -55,11 +83,10 @@ separateString s =
         ++ " "
         ++ String.slice 8 10 s
 
-
-main : Program () Model Msg
 main =
-    Browser.sandbox
-        { init = initialModel
+    Browser.element
+        { init = init
         , view = view
         , update = update
+        , subscriptions = subscriptions
         }
