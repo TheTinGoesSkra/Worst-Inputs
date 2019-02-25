@@ -7,3 +7,13 @@ In unserem Projekt wollen wir Eingaben für Telefonnummern machen, die möglichs
 1. Einige einfache Beispiele aus dem Internet nachprogrammieren
 2. Einige schwerere Beispiele selbst erfinden und programmieren
 3. Alle Beispiele auf eine Webseite tun 
+
+## Liste der Module
+
+1. AutoIncrement
+2. Droplist
+3. MovingButtons
+4. NumIncrement
+5. PrimeNumbers
+6. RandomChange
+7. RandomNumber
