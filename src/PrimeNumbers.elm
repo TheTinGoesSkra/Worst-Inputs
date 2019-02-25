@@ -93,7 +93,11 @@ updateModel msg model =
                     { model | alert = "That ain't no prime number, plonker!" }
                     
                 else
-                    { model | count = num * model.count, alert = "" }
+                    if num * model.count < 9999999999 then
+                        { model | count = num * model.count, alert = "" }
+                        
+                    else
+                        model   { model | count = num * model.count, alert = "" }
                     
                     
             Nothing ->
