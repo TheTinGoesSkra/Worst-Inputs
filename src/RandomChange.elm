@@ -151,7 +151,7 @@ view model =
     [ h1 [] [ text " Tip o' the morning to ya!"]
     , h1 [] [ text <| "Please enter " ++ (String.fromChar model.charachter) ++ " to get " ++ (String.fromInt model.number) ]
     , h1 [] [ text <|"Here is your phone number :  " ++ model.phoneNumber ]
-    , button [ onClick Restart ] [ text "that shit's too hard" ]
+    , button [ onClick Restart ] [ text "Let's try again, that shit's too hard" ]
     , button [ onClick Submit ] [ text "gottim!" ]
     ]
 
