@@ -56,10 +56,10 @@ updateModel msg model =
     case msg of
         
         No ->
-            { model | count = model.count + 1, alert = "Or this one?" }
+            { model | count = model.count + 1, alert = "This one alright, bugger?" }
 
         Yes ->
-            { model | alert = "Thank you!" }
+            { model | alert = "Thanks to ye, clunge!" }
             
         Roll num ->
             { model | count = num }
@@ -81,10 +81,10 @@ updateCmd msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ div [] [ text "Is this your phone number?" ]
-        , button [ onClick No ] [ text "No" ]
+        [ div [] [ text "That your phone number, mate?" ]
+        , button [ onClick No ] [ text "No, gimme another" ]
         , div [] [ text <| String.fromInt model.count ]
-        , button [ onClick Yes ] [ text "Yes" ]
+        , button [ onClick Yes ] [ text "Yeah" ]
         , div [] [ text <| model.alert ]
         ]
   
