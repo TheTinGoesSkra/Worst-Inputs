@@ -54,16 +54,16 @@ updateModel msg model =
             { model | count = model.count + 1 }
             
         Submit ->
-            { model | message = "Thank you!"}
+            { model | message = "Took you long enough"}
 
 
 view : Model -> Html Msg
 view model =
     div []
-        [ h1 [] [ text "Please enter your phone number!" ]
+        [ h1 [] [ text "Would you be so kind and enter you damn phone number!" ]
         , button [ onClick Increment ] [ text "+1" ]
         , div [] [ text <| separateString <| addZeros 10 <| String.fromInt model.count ]
-        , button [ onClick Submit ] [ text "Submit" ]
+        , button [ onClick Submit ] [ text "I gotcha!" ]
         , div [] [ text <| model.message ]
         ]
 
