@@ -5383,15 +5383,16 @@ var author$project$MovingButtons$initModel = {
 };
 var author$project$NumIncrement$initModel = {count: 1, message: ''};
 var author$project$PrimeNumbers$initModel = {alert: '', content: '', count: 1};
-var author$project$RandomChange$Model = F4(
-	function (number, charachter, pressedKeys, phoneNumber) {
-		return {charachter: charachter, number: number, phoneNumber: phoneNumber, pressedKeys: pressedKeys};
+var author$project$RandomChange$Model = F5(
+	function (number, charachter, pressedKeys, phoneNumber, message) {
+		return {charachter: charachter, message: message, number: number, phoneNumber: phoneNumber, pressedKeys: pressedKeys};
 	});
-var author$project$RandomChange$initModel = A4(
+var author$project$RandomChange$initModel = A5(
 	author$project$RandomChange$Model,
 	1,
 	_Utils_chr('0'),
 	_List_Nil,
+	'',
 	'');
 var author$project$RandomNumber$initModel = {alert: '', count: 0};
 var author$project$Template$initModel = {count: 0};
@@ -6372,7 +6373,7 @@ var author$project$RandomChange$subscriptions = function (model) {
 		_List_fromArray(
 			[
 				A2(elm$core$Platform$Sub$map, author$project$RandomChange$KeyboardMsg, ohanhi$keyboard$Keyboard$subscriptions),
-				A2(elm$time$Time$every, 5000, author$project$RandomChange$Roll)
+				A2(elm$time$Time$every, 1000, author$project$RandomChange$Roll)
 			]));
 };
 var author$project$RandomNumber$subscriptions = function (model) {
@@ -6452,6 +6453,8 @@ var author$project$RandomChange$updateCmd = F2(
 				return elm$core$Platform$Cmd$none;
 			case 'KeyboardMsg':
 				var keyMsg = msg.a;
+				return elm$core$Platform$Cmd$none;
+			case 'Restart':
 				return elm$core$Platform$Cmd$none;
 			default:
 				return elm$core$Platform$Cmd$none;
@@ -6567,7 +6570,7 @@ var author$project$Droplist$updateModel = F2(
 			default:
 				return _Utils_update(
 					model,
-					{alert: 'Thank you!'});
+					{alert: 'Thank you, nonce!'});
 		}
 	});
 var author$project$MovingButtons$changeDirectionX = function (pos) {
@@ -6700,9 +6703,9 @@ var author$project$PrimeNumbers$updateModel = F2(
 						author$project$PrimeNumbers$division(num),
 						author$project$PrimeNumbers$possibleNumbers(num)) ? _Utils_update(
 						model,
-						{alert: 'That ain\'t no prime number, plonker!'}) : _Utils_update(
+						{alert: 'That ain\'t no prime number, plonker!'}) : (((num * model.count) < 9999999999) ? _Utils_update(
 						model,
-						{alert: '', count: num * model.count});
+						{alert: '', count: num * model.count}) : model);
 				} else {
 					return _Utils_update(
 						model,
@@ -6736,10 +6739,10 @@ var author$project$RandomChange$checkKey = F2(
 		}
 	});
 var author$project$RandomChange$changeIfPressed = function (model) {
-	return A2(
+	return (A2(
 		elm$core$List$any,
 		author$project$RandomChange$checkKey(model.charachter),
-		model.pressedKeys) ? _Utils_update(
+		model.pressedKeys) && (elm$core$String$length(model.phoneNumber) < 10)) ? _Utils_update(
 		model,
 		{
 			phoneNumber: _Utils_ap(
@@ -7212,10 +7215,14 @@ var author$project$RandomChange$updateModel = F2(
 						{
 							pressedKeys: A2(ohanhi$keyboard$Keyboard$update, keyMsg, model.pressedKeys)
 						}));
-			default:
+			case 'Restart':
 				return _Utils_update(
 					model,
 					{phoneNumber: ''});
+			default:
+				return _Utils_update(
+					model,
+					{message: 'Took you long enough'});
 		}
 	});
 var author$project$RandomNumber$updateModel = F2(
@@ -7224,11 +7231,11 @@ var author$project$RandomNumber$updateModel = F2(
 			case 'No':
 				return _Utils_update(
 					model,
-					{alert: 'Or this one?', count: model.count + 1});
+					{alert: 'This one alright, bugger?', count: model.count + 1});
 			case 'Yes':
 				return _Utils_update(
 					model,
-					{alert: 'Thank you!'});
+					{alert: 'Thanks to ye, clunge!'});
 			default:
 				var num = msg.a;
 				return _Utils_update(
@@ -7360,6 +7367,7 @@ var author$project$AutoIncrement$viewBox = function (num) {
 				elm$html$Html$text(num)
 			]));
 };
+var elm$html$Html$h1 = _VirtualDom_node('h1');
 var elm$virtual_dom$VirtualDom$Normal = function (a) {
 	return {$: 'Normal', a: a};
 };
@@ -7575,6 +7583,13 @@ var author$project$AutoIncrement$view = function (model) {
 		_List_fromArray(
 			[
 				A2(
+				elm$html$Html$h1,
+				_List_Nil,
+				_List_fromArray(
+					[
+						elm$html$Html$text('You gotta go fast')
+					])),
+				A2(
 				rundis$elm_bootstrap$Bootstrap$Button$button,
 				_List_fromArray(
 					[
@@ -7667,11 +7682,11 @@ var author$project$Droplist$view = function (model) {
 		_List_fromArray(
 			[
 				A2(
-				elm$html$Html$div,
+				elm$html$Html$h1,
 				_List_Nil,
 				_List_fromArray(
 					[
-						elm$html$Html$text('Please choose your phone number.')
+						elm$html$Html$text('Choose your phone number, you twat.')
 					])),
 				A2(
 				elm$html$Html$select,
@@ -7793,6 +7808,13 @@ var author$project$MovingButtons$view = function (model) {
 		_List_fromArray(
 			[
 				A2(
+				elm$html$Html$h1,
+				_List_Nil,
+				_List_fromArray(
+					[
+						elm$html$Html$text('Gotta catch \'em all')
+					])),
+				A2(
 				elm$html$Html$h4,
 				_List_fromArray(
 					[
@@ -7878,7 +7900,6 @@ var author$project$NumIncrement$addZeros = F2(
 var author$project$NumIncrement$separateString = function (s) {
 	return A3(elm$core$String$slice, 0, 3, s) + (' ' + (A3(elm$core$String$slice, 3, 6, s) + (' ' + (A3(elm$core$String$slice, 6, 8, s) + (' ' + A3(elm$core$String$slice, 8, 10, s))))));
 };
-var elm$html$Html$h1 = _VirtualDom_node('h1');
 var author$project$NumIncrement$view = function (model) {
 	return A2(
 		elm$html$Html$div,
@@ -7948,6 +7969,7 @@ var author$project$PrimeNumbers$addZeros = F2(
 				'0'),
 			num);
 	});
+var elm$html$Html$h3 = _VirtualDom_node('h3');
 var elm$html$Html$input = _VirtualDom_node('input');
 var elm$html$Html$Attributes$placeholder = elm$html$Html$Attributes$stringProperty('placeholder');
 var elm$html$Html$Events$alwaysStop = function (x) {
@@ -7987,6 +8009,20 @@ var author$project$PrimeNumbers$view = function (model) {
 		_List_Nil,
 		_List_fromArray(
 			[
+				A2(
+				elm$html$Html$h1,
+				_List_Nil,
+				_List_fromArray(
+					[
+						elm$html$Html$text('2 is the only even prime number.')
+					])),
+				A2(
+				elm$html$Html$h3,
+				_List_Nil,
+				_List_fromArray(
+					[
+						elm$html$Html$text('It\'s kind of odd, isn\'t it')
+					])),
 				A2(
 				elm$html$Html$input,
 				_List_fromArray(
@@ -8047,6 +8083,7 @@ var author$project$PrimeNumbers$view = function (model) {
 			]));
 };
 var author$project$RandomChange$Restart = {$: 'Restart'};
+var author$project$RandomChange$Submit = {$: 'Submit'};
 var author$project$RandomChange$view = function (model) {
 	return A2(
 		elm$html$Html$div,
@@ -8058,8 +8095,15 @@ var author$project$RandomChange$view = function (model) {
 				_List_Nil,
 				_List_fromArray(
 					[
+						elm$html$Html$text(' Tip o\' the morning to ya!')
+					])),
+				A2(
+				elm$html$Html$h1,
+				_List_Nil,
+				_List_fromArray(
+					[
 						elm$html$Html$text(
-						'Please enter ' + (elm$core$String$fromChar(model.charachter) + (' to get ' + (elm$core$String$fromInt(model.number) + ' !'))))
+						'Please enter ' + (elm$core$String$fromChar(model.charachter) + (' to get ' + elm$core$String$fromInt(model.number))))
 					])),
 				A2(
 				elm$html$Html$h1,
@@ -8076,7 +8120,17 @@ var author$project$RandomChange$view = function (model) {
 					]),
 				_List_fromArray(
 					[
-						elm$html$Html$text('Restart')
+						elm$html$Html$text('Let\'s try again, that shit\'s too hard')
+					])),
+				A2(
+				elm$html$Html$button,
+				_List_fromArray(
+					[
+						elm$html$Html$Events$onClick(author$project$RandomChange$Submit)
+					]),
+				_List_fromArray(
+					[
+						elm$html$Html$text('gottim!')
 					]))
 			]));
 };
@@ -8089,11 +8143,11 @@ var author$project$RandomNumber$view = function (model) {
 		_List_fromArray(
 			[
 				A2(
-				elm$html$Html$div,
+				elm$html$Html$h1,
 				_List_Nil,
 				_List_fromArray(
 					[
-						elm$html$Html$text('Is this your phone number?')
+						elm$html$Html$text('That your phone number, mate?')
 					])),
 				A2(
 				elm$html$Html$button,
@@ -8103,7 +8157,7 @@ var author$project$RandomNumber$view = function (model) {
 					]),
 				_List_fromArray(
 					[
-						elm$html$Html$text('No')
+						elm$html$Html$text('No, gimme another')
 					])),
 				A2(
 				elm$html$Html$div,
@@ -8121,7 +8175,7 @@ var author$project$RandomNumber$view = function (model) {
 					]),
 				_List_fromArray(
 					[
-						elm$html$Html$text('Yes')
+						elm$html$Html$text('Yeah')
 					])),
 				A2(
 				elm$html$Html$div,
@@ -8176,6 +8230,17 @@ var author$project$Main$view = function (model) {
 			[
 				rundis$elm_bootstrap$Bootstrap$CDN$stylesheet,
 				A2(
+				elm$html$Html$h1,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'margin-top', '30px')
+					]),
+				_List_fromArray(
+					[
+						elm$html$Html$text('WOULD YOU PLEASE BE KIND ENOUGH TO ENTER YOUR PHONE NUMBER IN ALL FORMS BELOW, THANK YOU')
+					])),
+				A2(elm$html$Html$hr, _List_Nil, _List_Nil),
+				A2(
 				elm$html$Html$map,
 				author$project$Main$MovingButtons,
 				author$project$MovingButtons$view(model.movingButtons)),
@@ -8208,7 +8273,14 @@ var author$project$Main$view = function (model) {
 				A2(
 				elm$html$Html$map,
 				author$project$Main$RandomChange,
-				author$project$RandomChange$view(model.randomChange))
+				author$project$RandomChange$view(model.randomChange)),
+				A2(
+				elm$html$Html$div,
+				_List_fromArray(
+					[
+						A2(elm$html$Html$Attributes$style, 'margin-bottom', '100px')
+					]),
+				_List_Nil)
 			]));
 };
 var elm$browser$Browser$element = _Browser_element;
