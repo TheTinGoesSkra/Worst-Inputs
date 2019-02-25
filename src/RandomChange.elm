@@ -1,4 +1,4 @@
-module RandomChange exposing (..)
+module Main exposing (..)
 
 import Browser
 import Html exposing (..)
@@ -31,6 +31,7 @@ type alias Model =
   , charachter : Char 
   , pressedKeys : List Key
   , phoneNumber : String
+  , message : String
   }
 
 
@@ -47,7 +48,7 @@ initCmd =
 
 initModel : Model
 initModel =
-    Model 1 '0' [] ""
+    Model 1 '0' [] "" ""
 
 -- UPDATE
 
@@ -57,6 +58,7 @@ type Msg
   | NewVariables (Int, Char)
   | KeyboardMsg Keyboard.Msg
   | Restart
+  | Submit
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -77,6 +79,9 @@ updateModel msg model =
 
     Restart ->
       { model | phoneNumber = ""}
+      
+    Submit ->
+      { model | message = "Took you long enough"}
 
 updateCmd : Msg -> Model -> Cmd Msg
 updateCmd msg model =
@@ -92,7 +97,10 @@ updateCmd msg model =
 
     Restart ->
       Cmd.none
-
+      
+    Submit ->
+      Cmd.none
+      
 randomPoint : Random.Generator (Int, Char)
 randomPoint =
     Random.pair (Random.int 0 9) (Random.Char.char 97 122)
@@ -138,7 +146,9 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
   div []
-    [ h1 [] [ text <| "Please enter " ++ (String.fromChar model.charachter) ++ " to get " ++ (String.fromInt model.number) ++ " !" ]
+    [ h1 [] [ text " Tip o' the morning to ya!"]
+    , h1 [] [ text <| "Please enter " ++ (String.fromChar model.charachter) ++ " to get " ++ (String.fromInt model.number) ]
     , h1 [] [ text <|"Here is your phone number :  " ++ model.phoneNumber ]
-    , button [ onClick Restart ] [ text "Restart" ]
+    , button [ onClick Restart ] [ text "that shit's too hard" ]
+    , button [ onClick Submit ] [ text "gottim!" ]
     ]
