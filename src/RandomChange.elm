@@ -139,7 +139,7 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
    Sub.batch
        [ (Sub.map KeyboardMsg Keyboard.subscriptions)
-       , (Time.every 5000 Roll) ]
+       , (Time.every 1000 Roll) ]
 
 
 -- VIEW
