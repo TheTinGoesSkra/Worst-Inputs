@@ -1,14 +1,13 @@
-module AutoIncrement exposing (..)
+module AutoIncrement exposing (Model, Msg(..), fillTo10, init, initCmd, initModel, listIntToListString, main, makeListIntToListStringAndWithLength10, subscriptions, update, updateCmd, updateModel, view, viewBox)
 
-import Browser
-import Html exposing (Html, button, div, text)
-import Html.Events exposing (onClick)
-import Html.Attributes exposing (style)
-import Utils
-import Time
 import Bootstrap.Button as Button
 import Bootstrap.Utilities.Spacing as Spacing
 import Browser
+import Html exposing (Html, button, div, h1, text)
+import Html.Attributes exposing (style)
+import Html.Events exposing (onClick)
+import Time
+import Utils
 
 
 main =
@@ -62,13 +61,13 @@ updateModel msg model =
     case msg of
         Ok ->
             if List.length model.numbers < 10 then
-                { model | numbers = model.numbers ++ [model.count] , count = 0 }
-            
+                { model | numbers = model.numbers ++ [ model.count ], count = 0 }
+
             else
                 model
 
         Reset ->
-             { model | numbers = [] }
+            { model | numbers = [] }
 
         Tick time ->
             { model | count = modBy 10 (model.count + 1) }
@@ -77,45 +76,49 @@ updateModel msg model =
 updateCmd : Msg -> Model -> Cmd Msg
 updateCmd msg model =
     Cmd.none
-    
 
-listIntToListString : List Int -> List String 
+
+listIntToListString : List Int -> List String
 listIntToListString l =
     List.map String.fromInt l
+
 
 fillTo10 : List String -> List String
 fillTo10 l =
     let
-        len = List.length l
+        len =
+            List.length l
     in
-        l ++ List.repeat (10-len) ""
+    l ++ List.repeat (10 - len) ""
 
 
 makeListIntToListStringAndWithLength10 : Model -> List String
 makeListIntToListStringAndWithLength10 model =
     let
-        len = List.length model.numbers
-
+        len =
+            List.length model.numbers
     in
-        if len < 10 then
-            fillTo10 <| listIntToListString <| model.numbers ++ [ model.count ] 
-        
-        else
-            fillTo10 <| listIntToListString model.numbers
+    if len < 10 then
+        fillTo10 <| listIntToListString <| model.numbers ++ [ model.count ]
+
+    else
+        fillTo10 <| listIntToListString model.numbers
 
 
 view : Model -> Html Msg
 view model =
     div []
-        [ Button.button [ Button.secondary, Button.attrs [ onClick Ok ] ] [ text "Ok" ]
+        [ h1 [] [ text "You gotta go fast" ]
+        , Button.button [ Button.secondary, Button.attrs [ onClick Ok ] ] [ text "Ok" ]
         , Button.button [ Button.danger, Button.attrs [ onClick Reset ] ] [ text "Reset" ]
-        , div [] ( List.map viewBox <| makeListIntToListStringAndWithLength10 model )
+        , div [] (List.map viewBox <| makeListIntToListStringAndWithLength10 model)
         ]
 
 
 viewBox : String -> Html Msg
 viewBox num =
-    div [ style "display" "inline-block"
+    div
+        [ style "display" "inline-block"
         , style "height" "100px"
         , style "width" "100px"
         , style "text-align" "center"

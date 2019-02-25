@@ -1,6 +1,8 @@
-module MovingButtons exposing (..)
+module MovingButtons exposing (Alert, Direction, Model, Msg(..), Position, Positions, buttons, changeDirection, changeDirectionX, changeDirectionY, directionGen, init, initCmd, initModel, main, move, oneButton, oneOrMinusOneGen, positionGen, positionsGen, px, subscriptions, update, updateCmd, updateModel, view)
 
 import Array
+import Bootstrap.Button as Button
+import Bootstrap.Utilities.Spacing as Spacing
 import Browser
 import Html exposing (..)
 import Html.Attributes exposing (style)
@@ -9,8 +11,7 @@ import Random
 import Task
 import Time
 import Utils
-import Bootstrap.Button as Button
-import Bootstrap.Utilities.Spacing as Spacing
+
 
 main =
     Browser.element
@@ -171,7 +172,8 @@ updateCmd msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ h4 [ style "height" "1em", Spacing.mb1 ] [ text <| "Phone number: " ++ List.foldl (\i b -> b ++ String.fromInt i)  ""  model.numbers ]
+        [ h1 [] [ text "Gotta catch 'em all" ]
+        , h4 [ style "height" "1em", Spacing.mb1 ] [ text <| "Phone number: " ++ List.foldl (\i b -> b ++ String.fromInt i) "" model.numbers ]
         , Button.button [ Button.danger, Button.attrs [ onClick Reset ] ] [ text "Reset" ]
         , Button.button [ Button.primary, Button.attrs [ onClick ChangeAlert, Spacing.m2 ] ] [ text "Submit" ]
         , h6 [ style "color" model.alert.color, style "display" "inline-block" ] [ text model.alert.message ]
@@ -186,16 +188,17 @@ px value =
 
 oneButton : Int -> Position -> Html Msg
 oneButton i pos =
-    Button.button 
+    Button.button
         [ Button.secondary
-        , Button.attrs 
-            [style "height" (px 60)
+        , Button.attrs
+            [ style "height" (px 60)
             , style "width" (px 60)
             , style "left" (px pos.x)
             , style "position" "absolute"
             , style "top" (px pos.y)
-            , onClick <| Clicked i ]
+            , onClick <| Clicked i
             ]
+        ]
         [ text <| String.fromInt i ]
 
 
@@ -208,4 +211,3 @@ buttons positions =
         , style "position" "relative"
         ]
         (List.indexedMap oneButton positions)
-

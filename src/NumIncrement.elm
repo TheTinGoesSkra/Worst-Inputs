@@ -1,11 +1,9 @@
-module NumIncrement exposing (..)
+module NumIncrement exposing (Model, Msg(..), addZeros, init, initCmd, initModel, main, separateString, subscriptions, update, updateCmd, updateModel, view)
 
 import Browser
 import Html exposing (Html, button, div, h1, text)
 import Html.Attributes exposing (class)
-
 import Html.Events exposing (onClick)
-
 
 
 init : () -> ( Model, Cmd Msg )
@@ -34,13 +32,15 @@ updateCmd : Msg -> Model -> Cmd Msg
 updateCmd msg model =
     Cmd.none
 
+
 type alias Model =
     { count : Int, message : String }
 
 
 initModel : Model
 initModel =
-    { count = 1, message = ""}
+    { count = 1, message = "" }
+
 
 type Msg
     = Increment
@@ -52,9 +52,9 @@ updateModel msg model =
     case msg of
         Increment ->
             { model | count = model.count + 1 }
-            
+
         Submit ->
-            { model | message = "Took you long enough"}
+            { model | message = "Took you long enough" }
 
 
 view : Model -> Html Msg
@@ -82,6 +82,7 @@ separateString s =
         ++ String.slice 6 8 s
         ++ " "
         ++ String.slice 8 10 s
+
 
 main =
     Browser.element

@@ -1,4 +1,4 @@
-module Template exposing (..)
+module Template exposing (Model, Msg(..), init, initCmd, initModel, main, subscriptions, update, updateCmd, updateModel, view)
 
 import Browser
 import Html exposing (Html, button, div, text)

@@ -1,13 +1,13 @@
-module Utils exposing (..)
+module Utils exposing (embedView)
 
-import Html exposing (..)
 import Bootstrap.CDN as CDN
 import Bootstrap.Grid as Grid
+import Html exposing (..)
+
 
 embedView : (model -> Html msg) -> (model -> Html msg)
 embedView view model =
     Grid.container []
-        [ CDN.stylesheet 
+        [ CDN.stylesheet
         , view model
         ]
-        

@@ -1,4 +1,4 @@
-module Droplist exposing (..)
+module Droplist exposing (Model, Msg(..), addZeros, init, initCmd, initModel, main, subscriptions, update, updateCmd, updateModel, view, viewOption)
 
 import Browser
 import Html exposing (..)
@@ -16,7 +16,7 @@ main =
 
 
 type alias Model =
-    { count : Int, alert : String  }
+    { count : Int, alert : String }
 
 
 type Msg
@@ -39,7 +39,7 @@ initCmd =
 
 initModel : Model
 initModel =
-    { count = 0, alert = ""  }
+    { count = 0, alert = "" }
 
 
 subscriptions : Model -> Sub Msg
@@ -60,9 +60,10 @@ updateModel msg model =
 
         Decrement ->
             { model | count = model.count - 1 }
-            
+
         Yes ->
             { model | alert = "Thank you, nonce!" }
+
 
 updateCmd : Msg -> Model -> Cmd Msg
 updateCmd msg model =
@@ -72,17 +73,16 @@ updateCmd msg model =
 view : Model -> Html Msg
 view model =
     div []
+        [ h1 [] [ text "Choose your phone number, you twat." ]
+        , select [] (List.map (viewOption 3) (List.range 1 999))
+        , select [] (List.map (viewOption 3) (List.range 1 999))
+        , select [] (List.map (viewOption 2) (List.range 1 99))
+        , select [] (List.map (viewOption 2) (List.range 1 99))
+        , button [ onClick Yes ] [ text "Submit" ]
+        , div [] [ text <| model.alert ]
+        ]
 
-        [ div [] [ text "Choose your phone number, you twat." ]
-         , select [] ( List.map (viewOption 3) (List.range 1 999))
-         , select [] ( List.map (viewOption 3 )(List.range 1 999))
-         , select [] ( List.map (viewOption 2 )(List.range 1 99))
-         , select [] ( List.map (viewOption 2) (List.range 1 99))
-         , button [ onClick Yes ] [ text "Submit" ]
-         , div [] [ text <| model.alert ]
- ] 
- 
- 
+
 viewOption length n =
     option [ value (addZeros length (String.fromInt n)) ] [ text (addZeros length (String.fromInt n)) ]
 
@@ -90,4 +90,3 @@ viewOption length n =
 addZeros : Int -> String -> String
 addZeros length num =
     String.repeat (length - String.length num) "0" ++ num
-

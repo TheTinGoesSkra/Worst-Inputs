@@ -1,18 +1,18 @@
 module Main exposing (main)
 
-import Browser
-import MovingButtons
-import Template
 import AutoIncrement
-import RandomNumber
-import NumIncrement
-import Droplist
-import PrimeNumbers
-import RandomChange
-
-import Html exposing (..)
 import Bootstrap.CDN as CDN
 import Bootstrap.Grid as Grid
+import Browser
+import Droplist
+import Html exposing (..)
+import Html.Attributes exposing (style)
+import MovingButtons
+import NumIncrement
+import PrimeNumbers
+import RandomChange
+import RandomNumber
+import Template
 
 
 type alias Model =
@@ -119,8 +119,6 @@ updateModel msg model =
             { model | randomChange = RandomChange.updateModel randomChange model.randomChange }
 
 
-
-
 updateCmd : Msg -> Model -> Cmd Msg
 updateCmd msg model =
     case msg of
@@ -152,7 +150,9 @@ updateCmd msg model =
 view : Model -> Html Msg
 view model =
     Grid.container []
-        [ CDN.stylesheet 
+        [ CDN.stylesheet
+        , h1 [ style "margin-top" "30px" ] [ text "WOULD YOU PLEASE BE KIND ENOUGH TO ENTER YOUR PHONE NUMBER IN ALL FORMS BELOW, THANK YOU" ]
+        , hr [] []
         , Html.map MovingButtons (MovingButtons.view model.movingButtons)
         , hr [] []
         , Html.map RandomNumber (RandomNumber.view model.randomNumber)
@@ -166,6 +166,7 @@ view model =
         , Html.map PrimeNumbers (PrimeNumbers.view model.primeNumbers)
         , hr [] []
         , Html.map RandomChange (RandomChange.view model.randomChange)
+        , div [ style "margin-bottom" "100px" ] []
         ]
 
 

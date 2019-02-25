@@ -1,9 +1,10 @@
-module RandomNumber exposing (..)
+module RandomNumber exposing (Model, Msg(..), init, initCmd, initModel, main, roll, subscriptions, update, updateCmd, updateModel, view)
 
 import Browser
-import Html exposing (Html, button, div, text)
+import Html exposing (Html, button, div, h1, text)
 import Html.Events exposing (onClick)
 import Random
+
 
 main =
     Browser.element
@@ -33,7 +34,7 @@ init _ =
 
 initCmd : Cmd Msg
 initCmd =
-    Random.generate Roll roll 
+    Random.generate Roll roll
 
 
 initModel : Model
@@ -54,13 +55,12 @@ update msg model =
 updateModel : Msg -> Model -> Model
 updateModel msg model =
     case msg of
-        
         No ->
             { model | count = model.count + 1, alert = "This one alright, bugger?" }
 
         Yes ->
             { model | alert = "Thanks to ye, clunge!" }
-            
+
         Roll num ->
             { model | count = num }
 
@@ -73,7 +73,7 @@ updateCmd msg model =
 
         Yes ->
             Cmd.none
-            
+
         Roll num ->
             Cmd.none
 
@@ -81,14 +81,14 @@ updateCmd msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ div [] [ text "That your phone number, mate?" ]
+        [ h1 [] [ text "That your phone number, mate?" ]
         , button [ onClick No ] [ text "No, gimme another" ]
         , div [] [ text <| String.fromInt model.count ]
         , button [ onClick Yes ] [ text "Yeah" ]
         , div [] [ text <| model.alert ]
         ]
-  
-  
+
+
 roll : Random.Generator Int
 roll =
-  Random.int 1 9999999999
+    Random.int 1 9999999999

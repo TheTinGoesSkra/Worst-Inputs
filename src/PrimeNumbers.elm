@@ -1,10 +1,9 @@
-module PrimeNumbers exposing (..)
+module PrimeNumbers exposing (Model, Msg(..), addZeros, division, init, initCmd, initModel, main, possibleNumbers, subscriptions, update, updateCmd, updateModel, view)
 
 import Browser
-import Html exposing (Html, Attribute, input, button, div, text)
-import Html.Events exposing (onClick, onInput)
+import Html exposing (Attribute, Html, button, div, h1, h3, input, text)
 import Html.Attributes exposing (..)
-
+import Html.Events exposing (onClick, onInput)
 
 
 main =
@@ -14,10 +13,6 @@ main =
         , update = update
         , subscriptions = subscriptions
         }
-
-
-
-
 
 
 init : () -> ( Model, Cmd Msg )
@@ -32,7 +27,6 @@ initCmd =
     Cmd.none
 
 
-
 subscriptions : Model -> Sub Msg
 subscriptions model =
     Sub.none
@@ -43,14 +37,9 @@ update msg model =
     ( updateModel msg model, updateCmd msg model )
 
 
-
-
-
 updateCmd : Msg -> Model -> Cmd Msg
 updateCmd msg model =
     Cmd.none
-
-
 
 
 
@@ -58,15 +47,15 @@ updateCmd msg model =
 
 
 type alias Model =
-  { content : String 
-  , count : Int
-  , alert : String
-  }
+    { content : String
+    , count : Int
+    , alert : String
+    }
 
 
 initModel : Model
 initModel =
-  { content = "", count = 1, alert = "" }
+    { content = "", count = 1, alert = "" }
 
 
 
@@ -74,66 +63,72 @@ initModel =
 
 
 type Msg
-  = Change String
-  | Multiply
-  | Submit
-  | Reset
+    = Change String
+    | Multiply
+    | Submit
+    | Reset
 
 
 updateModel : Msg -> Model -> Model
 updateModel msg model =
-  case msg of
-    Change newContent ->
-      { model | content = newContent }
-      
-    Multiply ->
-        case String.toInt model.content of
-            Just num ->
-                if List.any (division num) ( possibleNumbers num) then
-                    { model | alert = "That ain't no prime number, plonker!" }
-                    
-                else
-                    if num * model.count < 9999999999 then
+    case msg of
+        Change newContent ->
+            { model | content = newContent }
+
+        Multiply ->
+            case String.toInt model.content of
+                Just num ->
+                    if List.any (division num) (possibleNumbers num) then
+                        { model | alert = "That ain't no prime number, plonker!" }
+
+                    else if num * model.count < 9999999999 then
                         { model | count = num * model.count, alert = "" }
-                        
+
                     else
-                        model   { model | count = num * model.count, alert = "" }
-                    
-                    
-            Nothing ->
-                { model | alert = "Gotta insert a number, cunt!" }
+                        model
 
-    Submit ->
-        { model | alert = "Thank you!" }    
+                Nothing ->
+                    { model | alert = "Gotta insert a number, cunt!" }
 
-    Reset ->
-        { model | count = 1 }
+        Submit ->
+            { model | alert = "Thank you!" }
+
+        Reset ->
+            { model | count = 1 }
+
+
 possibleNumbers : Int -> List Int
 possibleNumbers num =
-        List.range 2 (num-1)
-        
- 
+    List.range 2 (num - 1)
+
+
 division : Int -> Int -> Bool
 division num1 num2 =
     if modBy num2 num1 == 0 then
         True
-        
+
     else
         False
-        
+
+
 addZeros : Int -> String -> String
 addZeros length num =
     String.repeat (length - String.length num) "0" ++ num
+
+
+
 -- VIEW
 
 
 view : Model -> Html Msg
 view model =
-  div []
-    [ input [ placeholder "Insert a prime number", value model.content, onInput Change ] []
-    , div [] [ text <| addZeros 10 (String.fromInt model.count) ]
-    , button [ onClick Multiply ] [ text "Multiply" ]
-    , button [ onClick Submit ] [ text "Submit" ]
-    , button [ onClick Reset ] [ text "Reset" ]
-    , div [] [ text <| model.alert ]
-    ]
+    div []
+        [ h1 [] [ text "2 is the only even prime number." ]
+        , h3 [] [ text "It's kind of odd, isn't it" ]
+        , input [ placeholder "Insert a prime number", value model.content, onInput Change ] []
+        , div [] [ text <| addZeros 10 (String.fromInt model.count) ]
+        , button [ onClick Multiply ] [ text "Multiply" ]
+        , button [ onClick Submit ] [ text "Submit" ]
+        , button [ onClick Reset ] [ text "Reset" ]
+        , div [] [ text <| model.alert ]
+        ]
