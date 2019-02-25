@@ -6,7 +6,7 @@ In unserem Projekt wollen wir Eingaben für Telefonnummern machen, die möglichs
 
 1. Einige einfache Beispiele aus dem Internet nachprogrammieren
 2. Einige schwerere Beispiele selbst erfinden und programmieren
-3. Alle Beispiele auf eine Webseite tun 
+3. Alle Module auf einer Webseite zusammenfassen 
 
 ## Liste der Module
 
