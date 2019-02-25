@@ -82,6 +82,8 @@ updateModel msg model =
       
     Submit ->
       { model | message = "Took you long enough"}
+    
+
 
 updateCmd : Msg -> Model -> Cmd Msg
 updateCmd msg model =
@@ -114,7 +116,7 @@ sendMessage =
 
 changeIfPressed : Model -> Model
 changeIfPressed model =
-        if List.any ( checkKey model.charachter) model.pressedKeys then
+        if List.any ( checkKey model.charachter) model.pressedKeys && String.length model.phoneNumber < 10 then
             { model | phoneNumber = model.phoneNumber ++ (String.fromInt model.number) }
             
        else 
@@ -137,7 +139,7 @@ subscriptions : Model -> Sub Msg
 subscriptions model =
    Sub.batch
        [ (Sub.map KeyboardMsg Keyboard.subscriptions)
-       , (Time.every 1500 Roll) ]
+       , (Time.every 5000 Roll) ]
 
 
 -- VIEW
@@ -152,3 +154,4 @@ view model =
     , button [ onClick Restart ] [ text "that shit's too hard" ]
     , button [ onClick Submit ] [ text "gottim!" ]
     ]
+
