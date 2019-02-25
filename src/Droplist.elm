@@ -1,4 +1,4 @@
-module Main exposing (..)
+module Droplist exposing (..)
 
 import Browser
 import Html exposing (..)

@@ -1,3 +1,5 @@
+module RandomChange exposing (..)
+
 import Browser
 import Html exposing (..)
 import Html.Events exposing (..)
@@ -34,9 +36,18 @@ type alias Model =
 
 init : () -> (Model, Cmd Msg)
 init _ =
-  ( Model 1 '0' [] ""
-  , sendMessage
+  ( initModel
+  , initCmd
   )
+
+initCmd : Cmd Msg
+initCmd =
+    sendMessage
+
+
+initModel : Model
+initModel =
+    Model 1 '0' [] ""
 
 -- UPDATE
 
@@ -47,27 +58,40 @@ type Msg
   | KeyboardMsg Keyboard.Msg
   | Restart
 
-update : Msg -> Model -> (Model, Cmd Msg)
+
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
+    ( updateModel msg model, updateCmd msg model )
+
+updateModel : Msg -> Model -> Model
+updateModel msg model =
   case msg of
     Roll time ->
-      ( model
-      , sendMessage
-      )
+      model
 
     NewVariables (num, char) ->
-      ( { model | number = num, charachter = char }
-      , Cmd.none
-      )
+      { model | number = num, charachter = char }
       
     KeyboardMsg keyMsg ->
-      (changeIfPressed { model | pressedKeys = Keyboard.update keyMsg model.pressedKeys }
-      , Cmd.none
-      )
+      changeIfPressed { model | pressedKeys = Keyboard.update keyMsg model.pressedKeys }
+
     Restart ->
-      ( { model | phoneNumber = ""}
-      , Cmd.none
-      )
+      { model | phoneNumber = ""}
+
+updateCmd : Msg -> Model -> Cmd Msg
+updateCmd msg model =
+  case msg of
+    Roll time ->
+      sendMessage
+
+    NewVariables (num, char) ->
+      Cmd.none
+      
+    KeyboardMsg keyMsg ->
+      Cmd.none
+
+    Restart ->
+      Cmd.none
 
 randomPoint : Random.Generator (Int, Char)
 randomPoint =

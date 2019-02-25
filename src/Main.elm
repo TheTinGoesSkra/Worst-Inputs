@@ -6,6 +6,9 @@ import Template
 import AutoIncrement
 import RandomNumber
 import NumIncrement
+import Droplist
+import PrimeNumbers
+import RandomChange
 
 import Html exposing (..)
 import Bootstrap.CDN as CDN
@@ -18,6 +21,9 @@ type alias Model =
     , randomNumber : RandomNumber.Model
     , autoIncrement : AutoIncrement.Model
     , numIncrement : NumIncrement.Model
+    , droplist : Droplist.Model
+    , primeNumbers : PrimeNumbers.Model
+    , randomChange : RandomChange.Model
     }
 
 
@@ -36,6 +42,9 @@ initCmd =
         , Cmd.map RandomNumber RandomNumber.initCmd
         , Cmd.map AutoIncrement AutoIncrement.initCmd
         , Cmd.map NumIncrement NumIncrement.initCmd
+        , Cmd.map Droplist Droplist.initCmd
+        , Cmd.map PrimeNumbers PrimeNumbers.initCmd
+        , Cmd.map RandomChange RandomChange.initCmd
         ]
 
 
@@ -46,6 +55,9 @@ initModel =
     , randomNumber = RandomNumber.initModel
     , autoIncrement = AutoIncrement.initModel
     , numIncrement = NumIncrement.initModel
+    , droplist = Droplist.initModel
+    , primeNumbers = PrimeNumbers.initModel
+    , randomChange = RandomChange.initModel
     }
 
 
@@ -57,6 +69,9 @@ subscriptions model =
         , Sub.map RandomNumber (RandomNumber.subscriptions model.randomNumber)
         , Sub.map AutoIncrement (AutoIncrement.subscriptions model.autoIncrement)
         , Sub.map NumIncrement (NumIncrement.subscriptions model.numIncrement)
+        , Sub.map Droplist (Droplist.subscriptions model.droplist)
+        , Sub.map PrimeNumbers (PrimeNumbers.subscriptions model.primeNumbers)
+        , Sub.map RandomChange (RandomChange.subscriptions model.randomChange)
         ]
 
 
@@ -66,6 +81,9 @@ type Msg
     | RandomNumber RandomNumber.Msg
     | AutoIncrement AutoIncrement.Msg
     | NumIncrement NumIncrement.Msg
+    | Droplist Droplist.Msg
+    | PrimeNumbers PrimeNumbers.Msg
+    | RandomChange RandomChange.Msg
 
 
 update : Msg -> Model -> ( Model, Cmd Msg )
@@ -91,6 +109,15 @@ updateModel msg model =
         NumIncrement numIncrement ->
             { model | numIncrement = NumIncrement.updateModel numIncrement model.numIncrement }
 
+        Droplist droplist ->
+            { model | droplist = Droplist.updateModel droplist model.droplist }
+
+        PrimeNumbers primeNumbers ->
+            { model | primeNumbers = PrimeNumbers.updateModel primeNumbers model.primeNumbers }
+
+        RandomChange randomChange ->
+            { model | randomChange = RandomChange.updateModel randomChange model.randomChange }
+
 
 
 
@@ -112,12 +139,20 @@ updateCmd msg model =
         NumIncrement numIncrement ->
             Cmd.map NumIncrement <| NumIncrement.updateCmd numIncrement model.numIncrement
 
+        Droplist droplist ->
+            Cmd.map Droplist <| Droplist.updateCmd droplist model.droplist
+
+        PrimeNumbers primeNumbers ->
+            Cmd.map PrimeNumbers <| PrimeNumbers.updateCmd primeNumbers model.primeNumbers
+
+        RandomChange randomChange ->
+            Cmd.map RandomChange <| RandomChange.updateCmd randomChange model.randomChange
+
 
 view : Model -> Html Msg
 view model =
     Grid.container []
         [ CDN.stylesheet 
-        , hr [] []
         , Html.map MovingButtons (MovingButtons.view model.movingButtons)
         , hr [] []
         , Html.map RandomNumber (RandomNumber.view model.randomNumber)
@@ -125,6 +160,12 @@ view model =
         , Html.map AutoIncrement (AutoIncrement.view model.autoIncrement)
         , hr [] []
         , Html.map NumIncrement (NumIncrement.view model.numIncrement)
+        , hr [] []
+        , Html.map Droplist (Droplist.view model.droplist)
+        , hr [] []
+        , Html.map PrimeNumbers (PrimeNumbers.view model.primeNumbers)
+        , hr [] []
+        , Html.map RandomChange (RandomChange.view model.randomChange)
         ]
 
 

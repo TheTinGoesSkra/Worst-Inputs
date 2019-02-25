@@ -1,4 +1,4 @@
-module Main exposing (..)
+module PrimeNumbers exposing (..)
 
 import Browser
 import Html exposing (Html, Attribute, input, button, div, text)
