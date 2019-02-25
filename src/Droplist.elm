@@ -62,7 +62,7 @@ updateModel msg model =
             { model | count = model.count - 1 }
             
         Yes ->
-            { model | alert = "Thank you!" }
+            { model | alert = "Thank you, nonce!" }
 
 updateCmd : Msg -> Model -> Cmd Msg
 updateCmd msg model =
@@ -73,7 +73,7 @@ view : Model -> Html Msg
 view model =
     div []
 
-        [ div [] [ text "Please choose your phone number." ]
+        [ div [] [ text "Choose your phone number, you twat." ]
          , select [] ( List.map (viewOption 3) (List.range 1 999))
          , select [] ( List.map (viewOption 3 )(List.range 1 999))
          , select [] ( List.map (viewOption 2 )(List.range 1 99))
