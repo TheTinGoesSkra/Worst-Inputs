@@ -12,7 +12,7 @@ In unserem Projekt wollen wir Eingaben für Telefonnummern machen, die möglichs
 
 1. AutoIncrement
 2. Droplist
-3. MovingButtons
+3. MovingButtons von GeorgOhneH, 2.2.19, #84736e32b0c27921585cfebd4b96a9cd059aec92
 4. NumIncrement
 5. PrimeNumbers
 6. RandomChange
