@@ -117,5 +117,4 @@ view model =
     [ h1 [] [ text <| "Please enter " ++ (String.fromChar model.charachter) ++ " to get " ++ (String.fromInt model.number) ++ " !" ]
     , h1 [] [ text <|"Here is your phone number :  " ++ model.phoneNumber ]
     , button [ onClick Restart ] [ text "Restart" ]
-    , button [ attribute "onclick" "javascript:console.log(test)" ] [ text "test" ]
     ]
