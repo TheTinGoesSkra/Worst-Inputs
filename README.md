@@ -50,7 +50,7 @@ Die meisten Module wurden innerhalb von einer Doppelstunde programmiert.
 	Einfaches Beispiel um Zufallszahlen kennen zu lernen, von Leandro Hunter. 
 
 ### NumIncrement:
-	Typisches Beispiel mit dem Increment-Befehl, um Elm besser kennen   zu    lernen, von Vincent Ellenrieder.
+	Typisches Beispiel mit dem Increment-Befehl, um Elm besser kennen zu lernen, von Vincent Ellenrieder.
 
 ### AutoIncrement:
 	Weitere Anwendung von einer Clock, von Georg.
@@ -66,8 +66,9 @@ Die meisten Module wurden innerhalb von einer Doppelstunde programmiert.
 
 
 
-##Diskussion
-###Erkenntnisse/Probleme
+## Diskussion
+### Erkenntnisse/Probleme
+
 Für das Styling wurde Bootstrap verwendet, da es relativ einfach ist.
 
 
