@@ -43,25 +43,25 @@ Es wird so lange eine zufällige Nummer generiert bis diese per Zufall die Telef
 ## Timeline
 Die meisten Module wurden innerhalb von einer Doppelstunde programmiert.
 
-###MovingButtons:
+### MovingButtons:
 	Beispiel für Random Generatoren und einer Clock, von Georg Schwan.
 
-###RandomNumber:
+### RandomNumber:
 	Einfaches Beispiel um Zufallszahlen kennen zu lernen, von Leandro Hunter. 
 
-###NumIncrement:
-Typisches Beispiel mit dem Increment-Befehl, um Elm besser kennen   zu    lernen, von Vincent Ellenrieder.
+### NumIncrement:
+	Typisches Beispiel mit dem Increment-Befehl, um Elm besser kennen   zu    lernen, von Vincent Ellenrieder.
 
-###AutoIncrement:
+### AutoIncrement:
 	Weitere Anwendung von einer Clock, von Georg.
 
-###Droplist:
+### Droplist:
 	Anwendung von For-Loops, von Leandro Hunter.
 
-###RandomChange: 
-Verwendung von Random-Befehlen, Zeit-Elementen und Tastatur-Angaben, von Vincent Ellenrieder.
+### RandomChange: 
+	Verwendung von Random-Befehlen, Zeit-Elementen und Tastatur-Angaben, von Vincent Ellenrieder.
 
-###PrimeNumbers: 
+### PrimeNumbers: 
 	Verwendung von Textfields in Elm, von Leandro Hunter.
 
 
