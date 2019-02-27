@@ -150,8 +150,8 @@ updateCmd msg model =
 view : Model -> Html Msg
 view model =
     Grid.container []
-        [ --CDN.stylesheet --remove when compiling with elm make
-         div [ class "display-1" ] [ text "Worst Inputs" ]
+        [ CDN.stylesheet --remove when compiling with elm make
+        , div [ class "display-1" ] [ text "Worst Inputs" ]
         , h3 [ style "margin-top" "30px" ] [ text "Would you please be kind enough to enter your phone number in all forms below, thank you" ]
         , hr [] []
         , Html.map MovingButtons (MovingButtons.view model.movingButtons)
