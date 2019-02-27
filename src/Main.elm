@@ -6,7 +6,7 @@ import Bootstrap.Grid as Grid
 import Browser
 import Droplist
 import Html exposing (..)
-import Html.Attributes exposing (style)
+import Html.Attributes exposing (style, class)
 import MovingButtons
 import NumIncrement
 import PrimeNumbers
@@ -150,8 +150,9 @@ updateCmd msg model =
 view : Model -> Html Msg
 view model =
     Grid.container []
-        [ CDN.stylesheet
-        , h1 [ style "margin-top" "30px" ] [ text "WOULD YOU PLEASE BE KIND ENOUGH TO ENTER YOUR PHONE NUMBER IN ALL FORMS BELOW, THANK YOU" ]
+        [ --CDN.stylesheet --remove when compiling with elm make
+         div [ class "display-1" ] [ text "Worst Inputs" ]
+        , h3 [ style "margin-top" "30px" ] [ text "Would you please be kind enough to enter your phone number in all forms below, thank you" ]
         , hr [] []
         , Html.map MovingButtons (MovingButtons.view model.movingButtons)
         , hr [] []

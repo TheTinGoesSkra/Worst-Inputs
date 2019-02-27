@@ -2,7 +2,7 @@ module NumIncrement exposing (Model, Msg(..), addZeros, init, initCmd, initModel
 
 import Browser
 import Html exposing (Html, button, div, h1, text)
-import Html.Attributes exposing (class)
+import Html.Attributes exposing (class, style)
 import Html.Events exposing (onClick)
 
 
@@ -60,7 +60,7 @@ updateModel msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ h1 [] [ text "Would you be so kind and enter you damn phone number!" ]
+        [ div [ class "display-4", style "margin-bottom" "40px" ] [ text "Would you be so kind and enter you damn phone number!" ]
         , button [ onClick Increment ] [ text "+1" ]
         , div [] [ text <| separateString <| addZeros 10 <| String.fromInt model.count ]
         , button [ onClick Submit ] [ text "I gotcha!" ]

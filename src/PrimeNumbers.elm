@@ -1,7 +1,7 @@
 module PrimeNumbers exposing (Model, Msg(..), addZeros, division, init, initCmd, initModel, main, possibleNumbers, subscriptions, update, updateCmd, updateModel, view)
 
 import Browser
-import Html exposing (Attribute, Html, button, div, h1, h3, input, text)
+import Html exposing (Attribute, Html, button, div, h1, h3, input, text, h2, h4, h5, h6)
 import Html.Attributes exposing (..)
 import Html.Events exposing (onClick, onInput)
 
@@ -123,8 +123,8 @@ addZeros length num =
 view : Model -> Html Msg
 view model =
     div []
-        [ h1 [] [ text "2 is the only even prime number." ]
-        , h3 [] [ text "It's kind of odd, isn't it" ]
+        [ div [ class "display-4", style "margin-bottom" "0" ] [ text "2 is the only even prime number." ]
+        , h5 [ style "margin-bottom" "40px" ] [ text "It's kind of odd, isn't it?" ]
         , input [ placeholder "Insert a prime number", value model.content, onInput Change ] []
         , div [] [ text <| addZeros 10 (String.fromInt model.count) ]
         , button [ onClick Multiply ] [ text "Multiply" ]

@@ -3,6 +3,7 @@ module RandomNumber exposing (Model, Msg(..), init, initCmd, initModel, main, ro
 import Browser
 import Html exposing (Html, button, div, h1, text)
 import Html.Events exposing (onClick)
+import Html.Attributes exposing (..)
 import Random
 
 
@@ -81,7 +82,7 @@ updateCmd msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ h1 [] [ text "That your phone number, mate?" ]
+        [ div [ class "display-4", style "margin-bottom" "40px" ] [ text "That your phone number, mate?" ]
         , button [ onClick No ] [ text "No, gimme another" ]
         , div [] [ text <| String.fromInt model.count ]
         , button [ onClick Yes ] [ text "Yeah" ]

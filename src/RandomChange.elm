@@ -157,9 +157,9 @@ subscriptions model =
 view : Model -> Html Msg
 view model =
     div []
-        [ h1 [] [ text " Tip o' the morning to ya!" ]
-        , h1 [] [ text <| "Please enter " ++ String.fromChar model.charachter ++ " to get " ++ String.fromInt model.number ]
-        , h1 [] [ text <| "Here is your phone number :  " ++ model.phoneNumber ]
+        [ div [ class "display-4", style "margin-bottom" "20px" ] [ text "Tip o' the morning to ya!" ]
+        , h4 [] [ text <| "Please enter " ++ String.fromChar model.charachter ++ " to get " ++ String.fromInt model.number ]
+        , h4 [] [ text <| "Here is your phone number :  " ++ model.phoneNumber ]
         , button [ onClick Restart ] [ text "Let's try again, that shit's too hard" ]
         , button [ onClick Submit ] [ text "gottim!" ]
         ]

@@ -4,7 +4,7 @@ import Bootstrap.Button as Button
 import Bootstrap.Utilities.Spacing as Spacing
 import Browser
 import Html exposing (Html, button, div, h1, text)
-import Html.Attributes exposing (style)
+import Html.Attributes exposing (style, class)
 import Html.Events exposing (onClick)
 import Time
 import Utils
@@ -108,7 +108,7 @@ makeListIntToListStringAndWithLength10 model =
 view : Model -> Html Msg
 view model =
     div []
-        [ h1 [] [ text "You gotta go fast" ]
+        [ div [ class "display-4", style "margin-bottom" "40px" ] [ text "You gotta go fast" ]
         , Button.button [ Button.secondary, Button.attrs [ onClick Ok ] ] [ text "Ok" ]
         , Button.button [ Button.danger, Button.attrs [ onClick Reset ] ] [ text "Reset" ]
         , div [] (List.map viewBox <| makeListIntToListStringAndWithLength10 model)

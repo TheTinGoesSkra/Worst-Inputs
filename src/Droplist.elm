@@ -73,11 +73,11 @@ updateCmd msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ h1 [] [ text "Choose your phone number, you twat." ]
-        , select [] (List.map (viewOption 3) (List.range 1 999))
-        , select [] (List.map (viewOption 3) (List.range 1 999))
-        , select [] (List.map (viewOption 2) (List.range 1 99))
-        , select [] (List.map (viewOption 2) (List.range 1 99))
+        [ div [ class "display-4", style "margin-bottom" "40px" ] [ text "Choose your phone number, you twat." ]
+        , select [] (List.map (viewOption 3) (List.range 0 999))
+        , select [] (List.map (viewOption 3) (List.range 0 999))
+        , select [] (List.map (viewOption 2) (List.range 0 99))
+        , select [] (List.map (viewOption 2) (List.range 0 99))
         , button [ onClick Yes ] [ text "Submit" ]
         , div [] [ text <| model.alert ]
         ]
